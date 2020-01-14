@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}{{article.article_title}}{% endblock %}
+
+{% block content %}
+    <div class="card mt-5">
+        <div class="card-body">
+            <h5 class="card-title">{{article.article_title}}</h5>
+            <p class="card-text">{{article.article_text}}</p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">{{article.pub_date}}</li>
+                {% if article.was_published_recently %}
+                    <li class="list-group-item">Новая статья</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    {% if latest_comments_list %}
+        {% for c in latest_comments_list %}
+            <div class="card mt-2 mb-2 col-10">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">{{c.autor_name}}</li>
+                        <li class="list-group-item">{{c.comment_text}}</li>
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+    <div class="alert alert-danger col-10 mt-2 mb-2" role="alert">
+        Комментарии не найденны
+    </div>
+    {% endif %}
+    <div class="card mt-2 mb-2 col-10">
+        <div class="card-body">
+            <form action="{% url 'articles:comment' article.id %}" method="post">
+                {% csrf_token %}
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <input type="text" required placeholder="Ваше имя" name="name" class="form-control">
+                    </li>
+                    <li class="list-group-item">
+                        <textarea name="text" required placeholder="Текст комментария" class="form-control" id="exampleFormControlTextarea1" rows="15"></textarea>
+                    </li>
+                    <li class="list-group-item">
+                        <button type="submit" class="btn btn-success">Оставить комментарий</button>
+                    </li>
+            </form>
+        </div>
+    </div>
+{% endblock %}

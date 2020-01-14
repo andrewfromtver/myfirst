@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Последние статьи{% endblock %}
+
+{% block content %}
+    {% if latest_articles_list %}
+        {% for a in latest_articles_list %}
+            <div class="card mt-5">
+              <div class="card-body">
+                <h5 class="card-title">{{a.article_title}}</h5>
+                <p class="card-text">{{a.article_text}}</p>
+                <a href="{% url 'articles:detail' a.id  %}" class="btn btn-primary">Подробнее</a>
+              </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        Статьи не найденны
+    {% endif %}
+{% endblock %}
+
+
